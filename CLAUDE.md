@@ -45,6 +45,16 @@ be a **self-contained** copy with every product image inlined:
   set `data-en`/`data-fa` on text nodes so the existing `apply(lang)` toggle
   picks them up. The product script must run BEFORE the main language IIFE.
 
+## Git workflow (IMPORTANT)
+
+- **Commit and push all work** — after making changes, commit them and push, so
+  nothing is left only in the working tree. This is standing authorization for
+  this repo; no need to ask each time.
+- **Only ever push to a branch — never to `main`.** If the current branch is
+  `main`, create a feature branch first (e.g. `feature/<short-name>`) and push
+  that. Never run `git push` (or force-push) against `main`.
+- Open a PR from the branch when appropriate; let the user do the merge to `main`.
+
 ## Conventions
 
 - Keep the site self-contained and Farsi-first (RTL default before first paint).
