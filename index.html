@@ -49,9 +49,17 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
    since the composition is centred/symmetric, those blocks land in the same
    place regardless of direction. Keeping .wrap LTR also keeps the viewport
    scrollbar on the right in every language. */
+/* No overflow-x:hidden here (or on html/body) on purpose: it was a leftover
+   guard from when .wrap could flip to direction:rtl and the flip could cause
+   horizontal scrollbar jumps. .wrap is permanently direction:ltr now, so
+   that problem no longer exists — and setting overflow-x on this doctype-less
+   (quirks-mode) document breaks two things at once: it forces overflow-y to
+   compute to 'auto' on whichever element gets it (turning that element into
+   its own scroll container and silently breaking position:sticky on the
+   header inside it), and per spec, any non-'visible' overflow on <body> in
+   quirks mode makes document.scrollingElement return null. */
 .wrap{direction:ltr;background:var(--ivory);color:var(--ink);font-family:var(--sans);
-  font-size:17px;line-height:1.62;letter-spacing:.006em;-webkit-font-smoothing:antialiased;
-  overflow-x:hidden}
+  font-size:17px;line-height:1.62;letter-spacing:.006em;-webkit-font-smoothing:antialiased}
 .wrap::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.045;
   mix-blend-mode:soft-light;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -87,8 +95,10 @@ img{display:block;max-width:100%}
    so it reads as its own bar in both light and dark themes */
 header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--sand) 90%,transparent);
   backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
-  transition:border-color .3s,background .3s,box-shadow .3s}
+  transition:border-color .3s,background .3s,box-shadow .3s,transform .35s ease}
 header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(0,0,0,.45)}
+/* slide the bar out on scroll-down, back in on scroll-up */
+header.hide{transform:translateY(-100%)}
 /* keep the header layout fixed (logo left, tools right) in both RTL and LTR
    so nothing shifts sides when the language is switched */
 .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;height:74px;direction:ltr}
@@ -688,9 +698,18 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
     try{localStorage.setItem('chubin_theme',next);}catch(e){}
   });}
 
-  // sticky header border
+  // sticky header: bordered once scrolled; hides on scroll-down, reappears on scroll-up
   var hd=document.getElementById('hd');
-  var onScroll=function(){hd.classList.toggle('stuck', window.scrollY>8);};
+  var lastY=window.scrollY;
+  var onScroll=function(){
+    var y=window.scrollY;
+    hd.classList.toggle('stuck', y>8);
+    var delta=y-lastY;
+    if(y<=hd.offsetHeight){ hd.classList.remove('hide'); }
+    else if(delta>4){ hd.classList.add('hide'); }
+    else if(delta<-4){ hd.classList.remove('hide'); }
+    lastY=y;
+  };
   onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
 
   // reveal on scroll
