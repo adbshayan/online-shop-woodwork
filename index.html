@@ -42,10 +42,12 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 }
 
 *{box-sizing:border-box}
-/* keep the vertical scrollbar on the right even in RTL: <html> is never given
-   dir="rtl" (the browser draws the viewport scrollbar from the root's dir), so
-   the root stays LTR and the content flows RTL from <body> down instead */
-html[lang="fa"] body{direction:rtl}
+/* keep the vertical scrollbar on the right in every language. The viewport
+   scrollbar follows the direction of the scrolling element — <html> in standards
+   mode, <body> in quirks mode (this doc has no doctype). Keep BOTH of those LTR
+   and flow RTL from the content wrapper (.wrap) down, so the scrollbar never
+   jumps to the left. */
+html[lang="fa"] .wrap{direction:rtl}
 .wrap{background:var(--ivory);color:var(--ink);font-family:var(--sans);
   font-size:17px;line-height:1.62;letter-spacing:.006em;-webkit-font-smoothing:antialiased;
   overflow-x:hidden}
@@ -643,9 +645,10 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
   var root=document.documentElement;
   function apply(lang){
     root.setAttribute('lang',lang);
-    // keep <html> LTR so the viewport scrollbar stays on the right; flow the
-    // content RTL from <body> instead
-    if(document.body) document.body.setAttribute('dir', lang==='fa' ? 'rtl':'ltr');
+    // keep <html>/<body> LTR so the viewport scrollbar stays on the right;
+    // flow the content RTL from the .wrap container down instead
+    var wrap=document.querySelector('.wrap');
+    if(wrap) wrap.setAttribute('dir', lang==='fa' ? 'rtl':'ltr');
     document.querySelectorAll('[data-'+lang+']').forEach(function(el){
       var v=el.getAttribute('data-'+lang); if(v!=null) el.textContent=v;
     });
