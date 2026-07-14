@@ -83,9 +83,12 @@ img{display:block;max-width:100%}
 [lang="fa"] .lede,[lang="fa"] .body{line-height:2.05}
 
 /* ---------- header ---------- */
-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ivory) 85%,transparent);
-  backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
-header.stuck{border-bottom-color:var(--line)}
+/* navbar sits on a distinctly deeper tone than the page background (--ivory),
+   so it reads as its own bar in both light and dark themes */
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--sand) 90%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  transition:border-color .3s,background .3s,box-shadow .3s}
+header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(0,0,0,.45)}
 /* keep the header layout fixed (logo left, tools right) in both RTL and LTR
    so nothing shifts sides when the language is switched */
 .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;height:74px;direction:ltr}
