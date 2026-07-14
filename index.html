@@ -298,11 +298,9 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
 .sw button.muted{opacity:.3;cursor:default}
 .sw button.muted:hover{transform:none}
 .psizes{display:flex;gap:7px;flex-wrap:wrap;margin-top:2px}
-.psizes button{font-family:inherit;font-size:.72rem;letter-spacing:.05em;padding:5px 12px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);cursor:pointer;transition:border-color .15s,color .15s,background .15s}
-[lang="fa"] .psizes button{letter-spacing:0}
-.psizes button:hover{border-color:var(--brass-deep);color:var(--brass-deep)}
-.psizes button.on{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
-.psizes button.muted{opacity:.38}
+/* size tags are informational only — not clickable */
+.psizes span{font-family:inherit;font-size:.72rem;letter-spacing:.05em;padding:4px 11px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);cursor:default;user-select:none}
+[lang="fa"] .psizes span{letter-spacing:0}
 </style>
 
 <div class="wrap">
@@ -520,45 +518,45 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
   };
   var SIZES={S:{en:'Small',fa:'کوچک'},M:{en:'Medium',fa:'متوسط'},L:{en:'Large',fa:'بزرگ'}};
   var base='assets/products/';
+  // Each product: colours swap the photo; sizes (where present) are shown as
+  // static, non-clickable tags — they signal the model comes in more than one
+  // size without changing the image. img maps colour -> photo slug.
   var PRODUCTS=[
     {cat:{en:'Serving tray',fa:'سینی سرو'},name:{en:'Venice',fa:'ونیز'},code:'1001',
      colors:['white','steel','black'],sizes:['S','M','L'],
-     meta:{S:{en:'Small · 38 × 18 × 7 cm',fa:'کوچک · ۳۸ × ۱۸ × ۷ سانتی‌متر'},
-           M:{en:'Medium · 48 × 21 × 7 cm',fa:'متوسط · ۴۸ × ۲۱ × ۷ سانتی‌متر'},
-           L:{en:'Large · 52 × 24 × 7 cm',fa:'بزرگ · ۵۲ × ۲۴ × ۷ سانتی‌متر'}},
-     variants:{'white|S':'venice-white-s','white|M':'venice-white-m','white|L':'venice-white-l',
-               'steel|M':'venice-steel-m','steel|L':'venice-steel-l',
-               'black|S':'venice-black-s','black|M':'venice-black-m','black|L':'venice-black-l'},
-     def:{color:'white',size:'M'}},
+     meta:{en:'Oak rim · steel body',fa:'قاب بلوط · بدنهٔ استیل'},
+     img:{white:'venice-white',steel:'venice-steel',black:'venice-black'},def:{color:'white'}},
     {cat:{en:'Serving tray',fa:'سینی سرو'},name:{en:'Rushel',fa:'روشل'},code:'1002',
-     colors:['white','black'],sizes:null,
+     colors:['white','steel','black'],sizes:null,
      meta:{en:'Curved wood handles',fa:'دسته‌های چوبی منحنی'},
-     variants:{'white':'rushel-white','black':'rushel-black'},def:{color:'white'}},
+     img:{white:'rushel-white',steel:'rushel-steel',black:'rushel-black'},def:{color:'white'}},
     {cat:{en:'Serving tray',fa:'سینی سرو'},name:{en:'Riona',fa:'ریونا'},code:'1003',
      colors:['white','steel','black'],sizes:null,
      meta:{en:'Brushed-steel base',fa:'پایهٔ استیل مات'},
-     variants:{'white':'riona-white','steel':'riona-steel','black':'riona-black'},def:{color:'white'}},
-    {cat:{en:'Tissue & bin set',fa:'ست جادستمالی و سطل'},name:{en:'Roysa',fa:'رویسا'},code:'2002',
-     colors:['white','black','natural'],sizes:null,
-     meta:{en:'Tissue box + waste bin',fa:'جادستمالی + سطل'},
-     variants:{'white':'roysa-white','black':'roysa-black','natural':'roysa-natural'},def:{color:'white'}},
-    {cat:{en:'Tissue & bin set',fa:'ست جادستمالی و سطل'},name:{en:'Eliza',fa:'الیزا'},code:'2001',
-     colors:['white','natural'],sizes:null,
-     meta:{en:'Tissue box + waste bin',fa:'جادستمالی + سطل'},
-     variants:{'white':'eliza-white','natural':'eliza-natural'},def:{color:'white'}},
+     img:{white:'riona-white',steel:'riona-steel',black:'riona-black'},def:{color:'white'}},
+    {cat:{en:'Tissue box',fa:'جادستمالی'},name:{en:'Roysa',fa:'رویسا'},code:'2002',
+     colors:['white','steel','black'],sizes:null,
+     meta:{en:'Slotted front panel',fa:'پنل جلوی مشبک'},
+     img:{white:'roysa-white',steel:'roysa-steel',black:'roysa-black'},def:{color:'white'}},
+    {cat:{en:'Tissue box',fa:'جادستمالی'},name:{en:'Eliza',fa:'الیزا'},code:'2001',
+     colors:['black'],sizes:null,
+     meta:{en:'Wood-slat, low profile',fa:'چوبی، کوتاه'},
+     img:{black:'eliza-black'},def:{color:'black'}},
+    {cat:{en:'Waste bin',fa:'سطل زباله'},name:{en:'Sana',fa:'سانا'},code:'2003',
+     colors:['black','white','natural'],sizes:null,
+     meta:{en:'Wood-slat waste bin',fa:'سطل چوبی'},
+     img:{black:'bin-black',white:'bin-white',natural:'bin-natural'},def:{color:'black'}},
     {cat:{en:'Cutlery holder',fa:'جای قاشق و چنگال'},name:{en:'Vihan',fa:'ویهان'},code:'3001',
-     colors:['black','steel'],sizes:null,
+     colors:['white','black','steel'],sizes:null,
      meta:{en:'Standing caddy',fa:'ایستاده'},
-     variants:{'black':'vihan-black','steel':'vihan-steel'},def:{color:'black'}},
+     img:{white:'vihan-white',black:'vihan-black',steel:'vihan-steel'},def:{color:'white'}},
     {cat:{en:'Warmer dish',fa:'ظرف گرم‌نگه‌دار'},name:{en:'Lavan',fa:'لاوان'},code:'4001',
      colors:['white','black','steel'],sizes:['S','M','L'],
-     meta:{S:{en:'Small',fa:'کوچک'},M:{en:'Medium',fa:'متوسط'},L:{en:'Large',fa:'بزرگ'}},
-     variants:{'white|S':'lavan-white-s','black|M':'lavan-black-m','steel|L':'lavan-steel-l'},
-     def:{color:'white',size:'S'}}
+     meta:{en:'Available in three sizes',fa:'در سه اندازه'},
+     img:{white:'lavan-white-s',black:'lavan-black-m',steel:'lavan-steel-l'},def:{color:'white'}}
   ];
 
   function el(t,c){var e=document.createElement(t); if(c)e.className=c; return e;}
-  function key(c,s){return s?c+'|'+s:c;}
   function lang(){return document.documentElement.getAttribute('lang')||'fa';}
   function setBi(node,obj){
     node.setAttribute('data-en',obj.en); node.setAttribute('data-fa',obj.fa);
@@ -570,7 +568,8 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
 
   PRODUCTS.forEach(function(p){
     var hasSizes=!!p.sizes;
-    var state={color:p.def.color,size:hasSizes?p.def.size:null};
+    var multiColor=p.colors.length>1;
+    var state={color:p.def.color};
 
     var card=el('article','pcard reveal');
     var im=el('div','pim');
@@ -581,7 +580,7 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
     var body=el('div','pbody');
     var top=el('div');
     var nm=el('div','pname'); setBi(nm,p.name); top.appendChild(nm);
-    var meta=el('div','pmeta'); top.appendChild(meta);
+    var meta=el('div','pmeta'); setBi(meta,p.meta); top.appendChild(meta);
     body.appendChild(top);
 
     var mat=el('div','pmat');
@@ -590,13 +589,12 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
     var colorname=el('span','pcolorname'); mat.appendChild(colorname);
     body.appendChild(mat);
 
-    var sizeBtns={};
+    // Sizes are informational tags only — non-interactive, no image swap.
     if(hasSizes){
       var sizesRow=el('div','psizes');
       p.sizes.forEach(function(s){
-        var b=el('button'); b.type='button'; setBi(b,SIZES[s]);
-        b.addEventListener('click',function(){pick('size',s);});
-        sizesRow.appendChild(b); sizeBtns[s]=b;
+        var tag=el('span'); tag.setAttribute('aria-disabled','true'); setBi(tag,SIZES[s]);
+        sizesRow.appendChild(tag);
       });
       body.appendChild(sizesRow);
     }
@@ -607,7 +605,7 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
     p.colors.forEach(function(c){
       var b=el('button'); b.type='button'; b.style.background=COLORS[c].hex;
       b.setAttribute('aria-label',COLORS[c][lang()]); b.title=COLORS[c].en;
-      b.addEventListener('click',function(){pick('color',c);});
+      if(multiColor) b.addEventListener('click',function(){state.color=c; render();});
       sw.appendChild(b); colorBtns[c]=b;
     });
     prow.appendChild(sw);
@@ -617,23 +615,11 @@ footer{background:var(--cream);border-top:1px solid var(--line);padding-block:cl
     card.appendChild(body);
     grid.appendChild(card);
 
-    function sizesFor(c){return p.sizes.filter(function(s){return p.variants[key(c,s)];});}
-    function colorsFor(s){return p.colors.filter(function(c){return p.variants[key(c,s)];});}
-    function pick(axis,val){
-      if(hasSizes){
-        if(axis==='color'){state.color=val; if(sizesFor(val).indexOf(state.size)<0) state.size=sizesFor(val)[0];}
-        else{state.size=val; if(colorsFor(val).indexOf(state.color)<0) state.color=colorsFor(val)[0];}
-      }else{state.color=val;}
-      render();
-    }
     function render(){
-      var slug=p.variants[key(state.color,state.size)];
-      img.src=base+slug+'.jpg';
+      img.src=base+p.img[state.color]+'.jpg';
       img.alt=p.name.en+' '+p.cat.en+' — '+COLORS[state.color].en;
       setBi(colorname,{en:COLORS[state.color].en,fa:COLORS[state.color].fa});
-      setBi(meta, hasSizes?p.meta[state.size]:p.meta);
       p.colors.forEach(function(c){colorBtns[c].classList.toggle('on',c===state.color);});
-      if(hasSizes) p.sizes.forEach(function(s){sizeBtns[s].classList.toggle('on',s===state.size);});
     }
     render();
   });
