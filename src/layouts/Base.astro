@@ -1,0 +1,47 @@
+---
+// Base layout — full document shell for the Rosary single-page site.
+// Farsi-first (RTL-by-content). The composition is frozen LTR on .wrap; only text
+// nodes swap between languages, so the layout never mirrors. Do NOT put dir on
+// <html>/<body> — only on .wrap (handled by site.ts at runtime).
+import '../styles/global.css';
+
+const title = 'Rosary — Solid-Wood Furniture Atelier';
+---
+
+<html lang="fa">
+  <head>
+    <meta charset="utf-8" />
+    {/* set language before first paint — Farsi is the default */}
+    <script is:inline>
+      (function () {
+        try {
+          var l = localStorage.getItem('chubin_lang') || 'fa';
+          document.documentElement.lang = l;
+        } catch (e) {
+          document.documentElement.lang = 'fa';
+        }
+      })();
+    </script>
+    {/* set theme before first paint — follow saved choice, else system */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('chubin_theme');
+          if (t !== 'dark' && t !== 'light') {
+            t = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <slot />
+    </div>
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>

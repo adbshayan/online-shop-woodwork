@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Craft from '../components/Craft.astro';
+import Quote from '../components/Quote.astro';
+import Products from '../components/Products.astro';
+import Trade from '../components/Trade.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base>
+  <Nav />
+
+  <a id="top"></a>
+  <div class="container">
+    <Hero />
+  </div>
+
+  <hr class="rule" />
+
+  <div class="container">
+    <Craft />
+  </div>
+
+  <Quote />
+
+  <Products />
+
+  <div class="container">
+    <Trade />
+  </div>
+
+  <Contact />
+
+  <Footer />
+</Base>

@@ -1,0 +1,50 @@
+---
+// Products section — heading + a grid of one card per model, plus the client-side
+// colour-swap wiring for multi-colour cards.
+import { PRODUCTS } from '../data/products.ts';
+import ProductCard from './ProductCard.astro';
+---
+
+<section id="products" class="products">
+  <div class="container">
+    <div class="head reveal">
+      <span class="eyebrow" data-en="Products" data-fa="محصولات">محصولات</span>
+      <h2 style="margin-top:16px" data-en="Seven pieces in wood and metal." data-fa="هفت قطعه از چوب و فلز.">هفت قطعه از چوب و فلز.</h2>
+      <p class="pintro" data-en="Serving trays, tissue-and-bin sets, a cutlery holder, and warmer dishes — each crafted from solid wood and steel. Tap a colour or size to see the variation." data-fa="سینی‌های سرو، ست جادستمالی و سطل، جاقاشقی، و ظرف‌های گرم‌نگه‌دار — همگی از چوب ماسیو و فلز. رنگ یا اندازه را انتخاب کنید تا تغییر مدل را ببینید.">سینی‌های سرو، ست جادستمالی و سطل، جاقاشقی، و ظرف‌های گرم‌نگه‌دار — همگی از چوب ماسیو و فلز. رنگ یا اندازه را انتخاب کنید تا تغییر مدل را ببینید.</p>
+    </div>
+    <div class="pgrid" id="pgrid">
+      {PRODUCTS.map((product) => <ProductCard product={product} />)}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Colour swatch → swap the product photo. Cards render in their default colour
+  // server-side; this only wires the clicks (multi-colour cards only).
+  document.querySelectorAll<HTMLElement>('.pcard').forEach(function (card) {
+    const swatches = Array.from(card.querySelectorAll<HTMLButtonElement>('.sw button'));
+    if (swatches.length < 2) return; // single-colour: no interactive swap
+    const img = card.querySelector<HTMLImageElement>('.pim img');
+    const colorname = card.querySelector<HTMLElement>('.pcolorname');
+    swatches.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (img) {
+          if (b.dataset.src) img.src = b.dataset.src;
+          if (b.dataset.alt) img.alt = b.dataset.alt;
+        }
+        if (colorname) {
+          const en = b.dataset.cEn || '';
+          const fa = b.dataset.cFa || '';
+          colorname.setAttribute('data-en', en);
+          colorname.setAttribute('data-fa', fa);
+          const lang = document.documentElement.getAttribute('lang') || 'fa';
+          colorname.textContent = lang === 'en' ? en : fa;
+          colorname.setAttribute('dir', 'auto');
+        }
+        swatches.forEach(function (s) {
+          s.classList.toggle('on', s === b);
+        });
+      });
+    });
+  });
+</script>

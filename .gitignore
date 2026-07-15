@@ -3,6 +3,9 @@ node_modules/
 .pnp
 .pnp.js
 
+# astro generated types
+.astro/
+
 # builds / next.js (future)
 .next/
 out/
