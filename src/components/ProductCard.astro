@@ -1,0 +1,70 @@
+---
+// One product card. Rendered server-side in its default-colour state, with the
+// per-colour photo path / alt / colour-name carried as data-* on each swatch so the
+// client colour-swap script (in Products.astro) can switch photos without a rebuild.
+import { COLORS, SIZES, IMG_BASE, type Product } from '../data/products.ts';
+
+interface Props {
+  product: Product;
+}
+const { product: p } = Astro.props;
+
+const def = p.def.color;
+const defColor = COLORS[def];
+
+function slugSrc(color: (typeof p.colors)[number]) {
+  return IMG_BASE + p.img[color] + '.jpg';
+}
+function altFor(color: (typeof p.colors)[number]) {
+  return `${p.name.en} ${p.cat.en} — ${COLORS[color].en}`;
+}
+---
+
+<article class="pcard reveal">
+  <div class="pim">
+    <span class="cat" data-en={p.cat.en} data-fa={p.cat.fa} dir="auto">{p.cat.fa}</span>
+    <img loading="lazy" src={slugSrc(def)} alt={altFor(def)} />
+  </div>
+  <div class="pbody">
+    <div>
+      <div class="pname" data-en={p.name.en} data-fa={p.name.fa} dir="auto">{p.name.fa}</div>
+      <div class="pmeta" data-en={p.meta.en} data-fa={p.meta.fa} dir="auto">{p.meta.fa}</div>
+    </div>
+    <div class="pmat">
+      <span data-en="Wood & steel" data-fa="چوب و فلز" dir="auto">چوب و فلز</span>
+      {' · '}
+      <span class="pcolorname" data-en={defColor.en} data-fa={defColor.fa} dir="auto">{defColor.fa}</span>
+    </div>
+    {
+      p.sizes && (
+        <div class="psizes">
+          {p.sizes.map((s) => (
+            <span aria-disabled="true" data-en={SIZES[s].en} data-fa={SIZES[s].fa} dir="auto">
+              {SIZES[s].fa}
+            </span>
+          ))}
+        </div>
+      )
+    }
+    <div class="prow">
+      <div class="sw" aria-label="colours">
+        {
+          p.colors.map((c) => (
+            <button
+              type="button"
+              class={c === def ? 'on' : undefined}
+              style={`background:${COLORS[c].hex}`}
+              aria-label={COLORS[c].fa}
+              title={COLORS[c].en}
+              data-src={slugSrc(c)}
+              data-alt={altFor(c)}
+              data-c-en={COLORS[c].en}
+              data-c-fa={COLORS[c].fa}
+            />
+          ))
+        }
+      </div>
+      <span class="pcode">No. {p.code}</span>
+    </div>
+  </div>
+</article>
